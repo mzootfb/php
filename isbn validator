@@ -1,0 +1,46 @@
+<?php
+//function for the sum thingy
+function sum($isbn,$last_digit)
+{
+        $sum = (10*$isbn[0])+(9*$isbn[2])+(8*$isbn[1])+(7*$isbn[3])+(6*$isbn[4])+(5*$isbn[5])+(4*$isbn[6])+(3*$isbn[7])+(2*$isbn[8])+(1*$last_digit);
+        $validity = $sum % 11;
+}
+
+
+//fuction for isbn vaidation
+function isbn_valid($isbn)
+{
+        //check if isbn is 10 characters
+        if (strlen($isbn) != 10)
+        {
+                return "Not a valid ISBN";
+        }
+        //get the last digit
+        $last_digit = $isbn[9];
+        //working with X
+        if ($isbn[9] == "x" || "X")
+        {
+                $last_digit = 10;
+                sum($isbn,$last_digit);
+                if ($validity != 0){return "Not Valid";}
+		else{ return "Valid";}
+
+        }
+        else
+        {
+                sum($isbn,$last_digit);
+                if ($validity != 0){return "Not Valid";}
+        }
+
+}
+echo '
+<form method="get" action="ex_49.php">
+<input type="text" name="isbn"></input>
+<input name="submit" type="submit" value="submit"></input> 
+</form>';
+if (isset($_GET['submit']) && isset($_GET['isbn']))
+  {
+    $isbn  = $_GET['isbn'];
+    $isbn = preg_replace("/[^0-9]/","",$isbn);
+    echo isbn_valid($isbn);
+}
